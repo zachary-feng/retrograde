@@ -25,9 +25,9 @@ star_dec = data[:,2]
 star_mag = data[:,3]
 
 #taking every 50th data point to avoid crowdedness 
-minim_ra = star_ra[1::50]
-minim_dec = star_dec[1::50]
-minim_mag = star_mag[1::50]
+minim_ra = star_ra[1::15]
+minim_dec = star_dec[1::15]
+minim_mag = star_mag[1::15]
 
 #3D celestial sphere of stars
 theta_stars = numpy.pi/2 - minim_dec
@@ -40,17 +40,16 @@ for i in range(len(minim_mag)):
  if 0.0 <= minim_mag[i] <=0.1: 
     s[i] = 10
  elif 0.1 < minim_mag[i] and minim_mag[i] <= 0.2:
-    s[i] = 20
+    s[i] = .1
  elif 0.2 < minim_mag[i] and minim_mag[i] <= 0.3:
-    s[i] = 30
+    s[i] = .001
  elif 0.3 < minim_mag[i] and minim_mag[i] <= 0.4:
-    s[i] = 40
+    s[i] = .00001
  elif 0.4 < minim_mag[i] and minim_mag[i] <= 0.5:
-    s[i] = 50
-
+    s[i] = .0000001
 
 #plotting the stars' positions with the appropriate magnitude representation
-plt.scatter(minim_ra, minim_dec, marker='*', c='yellow', s=s)
+plt.scatter(minim_ra, minim_dec, marker='*', c='yellow', s=s, alpha = 0.4)
             
 ax = plt.gca()
 ax.set_xlabel('Declination (rad)', fontsize=12) 
@@ -310,8 +309,7 @@ array4[2] = Z5
    
 # Fifty lines of random 3-D lines
 data = [array1, array2, array3, array4]
-          
-         
+
 # Creating fifty line objects.
 # NOTE: Can't pass empty arrays into 3d version of plot()
 lines = [ax.plot(dat[0, 0:1], dat[1, 0:1], dat[2, 0:1])[0] for dat in data]
@@ -333,6 +331,7 @@ ax.set_zlabel('Z')
 
 # Creating the Animation object
 line_ani = animation.FuncAnimation(fig, update_lines, 876, fargs=(data, lines),
-                                   interval=10, blit=False)
+                                   interval=50, blit=False)
+#line_ani.save('sphere.mp4', writer = "ffmpeg")
 ax.set_facecolor('black')
 plt.show()
